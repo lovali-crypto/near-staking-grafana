@@ -1,0 +1,375 @@
+{
+    "annotations": {
+      "list": [
+        {
+          "builtIn": 1,
+          "datasource": {
+            "type": "grafana",
+            "uid": "-- Grafana --"
+          },
+          "enable": true,
+          "hide": true,
+          "iconColor": "rgba(0, 211, 255, 1)",
+          "name": "Annotations & Alerts",
+          "target": {
+            "limit": 100,
+            "matchAny": false,
+            "tags": [],
+            "type": "dashboard"
+          },
+          "type": "dashboard"
+        }
+      ]
+    },
+    "editable": true,
+    "fiscalYearStartMonth": 0,
+    "graphTooltip": 0,
+    "id": 11,
+    "links": [],
+    "liveNow": false,
+    "panels": [
+      {
+        "datasource": {
+          "type": "postgres",
+          "uid": "jFrj9WiVk"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "axisLabel": "",
+              "axisPlacement": "auto",
+              "barAlignment": 0,
+              "drawStyle": "line",
+              "fillOpacity": 0,
+              "gradientMode": "none",
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              },
+              "lineInterpolation": "smooth",
+              "lineWidth": 1,
+              "pointSize": 5,
+              "scaleDistribution": {
+                "type": "linear"
+              },
+              "showPoints": "auto",
+              "spanNulls": false,
+              "stacking": {
+                "group": "A",
+                "mode": "none"
+              },
+              "thresholdsStyle": {
+                "mode": "off"
+              }
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            }
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 0,
+          "y": 0
+        },
+        "id": 2,
+        "options": {
+          "legend": {
+            "calcs": [],
+            "displayMode": "list",
+            "placement": "bottom"
+          },
+          "tooltip": {
+            "mode": "single",
+            "sort": "none"
+          }
+        },
+        "targets": [
+          {
+            "datasource": {
+              "type": "postgres",
+              "uid": "jFrj9WiVk"
+            },
+            "format": "time_series",
+            "group": [],
+            "metricColumn": "none",
+            "rawQuery": true,
+            "rawSql": "SELECT EXTRACT(EPOCH FROM to_date(CONCAT(extract(day from to_timestamp(receipt_included_in_block_timestamp / 10^9)), '/', extract(month from to_timestamp(receipt_included_in_block_timestamp / 10^9)), '/', extract(year from to_timestamp(receipt_included_in_block_timestamp / 10^9))), 'DD/MM/YYYY')) as time, \r\n    COUNT(*) as total_stake_ops\r\n    FROM public.action_receipt_actions\r\n\tWHERE receipt_receiver_account_id LIKE '%.pool.f863973.m0'\r\n\tAND args->>'method_name' = 'deposit_and_stake'\r\n\tAND action_kind = 'FUNCTION_CALL'\r\n\tAND $__unixEpochNanoFilter(receipt_included_in_block_timestamp)\r\n\tGROUP BY CONCAT(extract(day from to_timestamp(receipt_included_in_block_timestamp / 10^9)), '/', extract(month from to_timestamp(receipt_included_in_block_timestamp / 10^9)), '/', extract(year from to_timestamp(receipt_included_in_block_timestamp / 10^9)))\r\n\tORDER BY EXTRACT(EPOCH FROM to_date(CONCAT(extract(day from to_timestamp(receipt_included_in_block_timestamp / 10^9)), '/', extract(month from to_timestamp(receipt_included_in_block_timestamp / 10^9)), '/', extract(year from to_timestamp(receipt_included_in_block_timestamp / 10^9))), 'DD/MM/YYYY'));",
+            "refId": "A",
+            "select": [
+              [
+                {
+                  "params": [
+                    "value"
+                  ],
+                  "type": "column"
+                }
+              ]
+            ],
+            "timeColumn": "time",
+            "where": [
+              {
+                "name": "$__timeFilter",
+                "params": [],
+                "type": "macro"
+              }
+            ]
+          }
+        ],
+        "title": "Total stake operation per day",
+        "transformations": [],
+        "type": "timeseries"
+      },
+      {
+        "datasource": {
+          "type": "postgres",
+          "uid": "jFrj9WiVk"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "axisLabel": "",
+              "axisPlacement": "auto",
+              "barAlignment": 0,
+              "drawStyle": "line",
+              "fillOpacity": 0,
+              "gradientMode": "none",
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              },
+              "lineInterpolation": "smooth",
+              "lineWidth": 1,
+              "pointSize": 5,
+              "scaleDistribution": {
+                "type": "linear"
+              },
+              "showPoints": "auto",
+              "spanNulls": false,
+              "stacking": {
+                "group": "A",
+                "mode": "none"
+              },
+              "thresholdsStyle": {
+                "mode": "off"
+              }
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            }
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 12,
+          "y": 0
+        },
+        "id": 4,
+        "options": {
+          "legend": {
+            "calcs": [],
+            "displayMode": "list",
+            "placement": "bottom"
+          },
+          "tooltip": {
+            "mode": "single",
+            "sort": "none"
+          }
+        },
+        "targets": [
+          {
+            "datasource": {
+              "type": "postgres",
+              "uid": "jFrj9WiVk"
+            },
+            "format": "time_series",
+            "group": [],
+            "metricColumn": "none",
+            "rawQuery": true,
+            "rawSql": "SELECT EXTRACT(EPOCH FROM to_date(CONCAT(extract(day from to_timestamp(receipt_included_in_block_timestamp / 10^9)), '/', extract(month from to_timestamp(receipt_included_in_block_timestamp / 10^9)), '/', extract(year from to_timestamp(receipt_included_in_block_timestamp / 10^9))), 'DD/MM/YYYY')) as time, \r\n    COUNT(DISTINCT(receipt_predecessor_account_id)) as total_stakers\r\n    FROM public.action_receipt_actions\r\n\tWHERE receipt_receiver_account_id LIKE '%.pool.f863973.m0'\r\n\tAND args->>'method_name' = 'deposit_and_stake'\r\n\tAND action_kind = 'FUNCTION_CALL'\r\n\tAND $__unixEpochNanoFilter(receipt_included_in_block_timestamp)\r\n\tGROUP BY CONCAT(extract(day from to_timestamp(receipt_included_in_block_timestamp / 10^9)), '/', extract(month from to_timestamp(receipt_included_in_block_timestamp / 10^9)), '/', extract(year from to_timestamp(receipt_included_in_block_timestamp / 10^9)))\r\n\tORDER BY EXTRACT(EPOCH FROM to_date(CONCAT(extract(day from to_timestamp(receipt_included_in_block_timestamp / 10^9)), '/', extract(month from to_timestamp(receipt_included_in_block_timestamp / 10^9)), '/', extract(year from to_timestamp(receipt_included_in_block_timestamp / 10^9))), 'DD/MM/YYYY'));",
+            "refId": "A",
+            "select": [
+              [
+                {
+                  "params": [
+                    "value"
+                  ],
+                  "type": "column"
+                }
+              ]
+            ],
+            "timeColumn": "time",
+            "where": [
+              {
+                "name": "$__timeFilter",
+                "params": [],
+                "type": "macro"
+              }
+            ]
+          }
+        ],
+        "title": "Total stakers",
+        "transformations": [],
+        "type": "timeseries"
+      },
+      {
+        "datasource": {
+          "type": "postgres",
+          "uid": "jFrj9WiVk"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "axisLabel": "",
+              "axisPlacement": "auto",
+              "barAlignment": 0,
+              "drawStyle": "line",
+              "fillOpacity": 0,
+              "gradientMode": "none",
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              },
+              "lineInterpolation": "smooth",
+              "lineWidth": 1,
+              "pointSize": 5,
+              "scaleDistribution": {
+                "type": "linear"
+              },
+              "showPoints": "auto",
+              "spanNulls": false,
+              "stacking": {
+                "group": "A",
+                "mode": "none"
+              },
+              "thresholdsStyle": {
+                "mode": "off"
+              }
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            }
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 0,
+          "y": 8
+        },
+        "id": 3,
+        "options": {
+          "legend": {
+            "calcs": [],
+            "displayMode": "list",
+            "placement": "bottom"
+          },
+          "tooltip": {
+            "mode": "single",
+            "sort": "none"
+          }
+        },
+        "targets": [
+          {
+            "datasource": {
+              "type": "postgres",
+              "uid": "jFrj9WiVk"
+            },
+            "format": "time_series",
+            "group": [],
+            "metricColumn": "none",
+            "rawQuery": true,
+            "rawSql": "SELECT EXTRACT(EPOCH FROM to_date(CONCAT(extract(day from to_timestamp(receipt_included_in_block_timestamp / 10^9)), '/', extract(month from to_timestamp(receipt_included_in_block_timestamp / 10^9)), '/', extract(year from to_timestamp(receipt_included_in_block_timestamp / 10^9))), 'DD/MM/YYYY')) as time, \r\n    SUM(CAST (args->>'deposit' AS numeric)) / 10^24 as total_stake_vol\r\n    FROM public.action_receipt_actions\r\n\tWHERE receipt_receiver_account_id LIKE '%.pool.f863973.m0'\r\n\tAND args->>'method_name' = 'deposit_and_stake'\r\n\tAND action_kind = 'FUNCTION_CALL'\r\n\tAND $__unixEpochNanoFilter(receipt_included_in_block_timestamp)\r\n\tGROUP BY CONCAT(extract(day from to_timestamp(receipt_included_in_block_timestamp / 10^9)), '/', extract(month from to_timestamp(receipt_included_in_block_timestamp / 10^9)), '/', extract(year from to_timestamp(receipt_included_in_block_timestamp / 10^9)))\r\n\tORDER BY EXTRACT(EPOCH FROM to_date(CONCAT(extract(day from to_timestamp(receipt_included_in_block_timestamp / 10^9)), '/', extract(month from to_timestamp(receipt_included_in_block_timestamp / 10^9)), '/', extract(year from to_timestamp(receipt_included_in_block_timestamp / 10^9))), 'DD/MM/YYYY'));",
+            "refId": "A",
+            "select": [
+              [
+                {
+                  "params": [
+                    "value"
+                  ],
+                  "type": "column"
+                }
+              ]
+            ],
+            "timeColumn": "time",
+            "where": [
+              {
+                "name": "$__timeFilter",
+                "params": [],
+                "type": "macro"
+              }
+            ]
+          }
+        ],
+        "title": "Total stake volume per day",
+        "transformations": [],
+        "type": "timeseries"
+      }
+    ],
+    "schemaVersion": 36,
+    "style": "dark",
+    "tags": [],
+    "templating": {
+      "list": []
+    },
+    "time": {
+      "from": "now-7d",
+      "to": "now"
+    },
+    "timepicker": {},
+    "timezone": "",
+    "title": "NEAR - Staking stats",
+    "uid": "48539Ki4k",
+    "version": 7,
+    "weekStart": ""
+  }
